@@ -1,0 +1,58 @@
+<html>
+	<head>
+		<title>My first three.js app</title>
+		<style>
+			body { margin: 0; }
+			canvas { background: red; }
+		</style>
+	</head>
+	<body>
+		<script src="three.js"></script>
+		<script>
+			THREE.Cache.enabled = true;
+			
+			var scene = new THREE.Scene();
+			var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
+
+			var renderer = new THREE.WebGLRenderer();
+			renderer.setSize( window.innerWidth, window.innerHeight );
+			document.body.appendChild( renderer.domElement );
+
+			var luz = new THREE.AmbientLight(0x404050);
+			scene.add(luz);
+
+			var loader = new THREE.JSONLoader();
+			loader.load('casa.json', h_load);
+			 
+			function h_load(geometry, materials){
+				var mesh;
+				var material = new THREE.MultiMaterial(materials);
+				mesh = new THREE.Mesh(geometry, material);
+				scene.add(mesh);
+				mesh.position.z= -10;
+			}
+	
+			// Creamos una par de focos de luz
+			var luz1 = new THREE.PointLight(0xff0044); // Rojizo
+			luz1.position.set(
+				120, // Posición en eje X
+				260, // Posición en eje Y
+				100 // Posición en eje Z
+			);
+			  
+			var luz2 = new THREE.PointLight(0x4499ff); // Azulado
+			luz2.position.set(
+				-100, // Posición en eje X
+				100, // Posición en eje Y
+				200 // Posición en eje Z
+			);
+			  
+			// Añadimos las luces
+			scene.add(luz1);
+			scene.add(luz2);
+			camera.position.z = 5;
+
+			renderer.render(scene, camera);
+		</script>
+	</body>
+</html>
